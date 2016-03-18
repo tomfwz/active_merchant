@@ -6,7 +6,8 @@ module ActiveMerchant #:nodoc:
   module Billing #:nodoc:
     class PaypalBogusGateway < BogusGateway
 
-      REDIRECT_URL = "https://bogus.paypal.com"
+      REDIRECT_URL  = "https://bogus.paypal.com"
+      PAYER_ID      = "123123123"
 
       def setup_authorization money, options = {}
         requires!(options, :return_url, :cancel_return_url)
@@ -18,6 +19,10 @@ module ActiveMerchant #:nodoc:
         requires!(options, :return_url, :cancel_return_url)
        
         PaypalExpressResponse.new true, SUCCESS_MESSAGE, { Token: AUTHORIZATION }, test: true
+      end
+
+      def details_for token
+        PaypalExpressResponse.new true, SUCCESS_MESSAGE, { payer_id: PAYER_ID }, test: true
       end
 
       def authorize money, options = {}
